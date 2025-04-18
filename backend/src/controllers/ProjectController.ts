@@ -12,4 +12,31 @@ export class ProjectController {
       console.log(error);
     }
   };
+
+  static getProjects = async (req: Request, res: Response) => {
+    try {
+      const projects = await Project.find();
+      res.json(projects);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  static getProjectById = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+      const project = await Project.findById(id);
+
+      if (!project) {
+        const error = new Error("Project not found");
+        res.status(404).json({ error: error.message });
+        return;
+      }
+
+      res.json(project);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
