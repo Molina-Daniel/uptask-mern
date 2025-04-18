@@ -22,7 +22,11 @@ export const TaskSchema: Schema = new Schema(
     name: { type: String, required: true, trim: true },
     description: { type: String, required: true, trim: true },
     project: { type: Types.ObjectId, required: true, ref: "Project" },
-    status: { type: String, required: true, enum: Object.values(taskStatus) },
+    status: {
+      type: String,
+      enum: Object.values(taskStatus),
+      default: taskStatus.PENDING,
+    },
   },
   {
     timestamps: true,
