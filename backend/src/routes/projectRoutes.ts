@@ -55,4 +55,12 @@ router.post(
   TaskController.createTask
 );
 
+router.get(
+  "/:projectId/tasks",
+  param("projectId").isMongoId().withMessage("Invalid project ID"),
+  handleInputValidation,
+  validateProjectExists,
+  TaskController.getTasks
+);
+
 export default router;

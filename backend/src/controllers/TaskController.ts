@@ -12,6 +12,20 @@ export class TaskController {
       res.send("Task created successfully");
     } catch (error) {
       console.log(error);
+      res.status(500).json({ error: "Server error" });
+    }
+  };
+
+  static getTasks = async (req: Request, res: Response) => {
+    const { project } = req;
+    try {
+      const tasks = await Task.find({ project: project.id }).populate(
+        "project"
+      );
+      res.json(tasks);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Server error" });
     }
   };
 }

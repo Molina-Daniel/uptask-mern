@@ -27,6 +27,7 @@ export async function validateProjectExists(
     req.project = project;
     next();
   } catch (error) {
-    console;
+    console.log(error);
+    res.status(500).json({ error: "Server error" });
   }
 }

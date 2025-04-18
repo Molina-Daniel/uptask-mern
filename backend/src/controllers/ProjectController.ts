@@ -10,6 +10,7 @@ export class ProjectController {
       res.send("Project created successfully");
     } catch (error) {
       console.log(error);
+      res.status(500).json({ error: "Server error" });
     }
   };
 
@@ -19,6 +20,7 @@ export class ProjectController {
       res.json(projects);
     } catch (error) {
       console.log(error);
+      res.status(500).json({ error: "Server error" });
     }
   };
 
@@ -37,6 +39,7 @@ export class ProjectController {
       res.json(project);
     } catch (error) {
       console.log(error);
+      res.status(500).json({ error: "Server error" });
     }
   };
 
@@ -59,6 +62,7 @@ export class ProjectController {
       res.send("Project updated successfully");
     } catch (error) {
       console.log(error);
+      res.status(500).json({ error: "Server error" });
     }
   };
 
@@ -78,6 +82,7 @@ export class ProjectController {
       res.send("Project deleted successfully");
     } catch (error) {
       console.log(error);
+      res.status(500).json({ error: "Server error" });
     }
   };
 }
