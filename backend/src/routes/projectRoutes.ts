@@ -45,13 +45,14 @@ router.delete(
 );
 
 // Routes for tasks
+router.param("projectId", validateProjectExists);
+
 router.post(
   "/:projectId/tasks",
   param("projectId").isMongoId().withMessage("Invalid project ID"),
   body("name").notEmpty().withMessage("Task title is required"),
   body("description").notEmpty().withMessage("Task description is required"),
   handleInputValidation,
-  validateProjectExists,
   TaskController.createTask
 );
 
@@ -59,15 +60,13 @@ router.get(
   "/:projectId/tasks",
   param("projectId").isMongoId().withMessage("Invalid project ID"),
   handleInputValidation,
-  validateProjectExists,
   TaskController.getTasks
 );
 
 router.get(
   "/:projectId/tasks/:taskId",
-  param("projectId").isMongoId().withMessage("Invalid project ID"),
+  param("taskId").isMongoId().withMessage("Invalid project ID"),
   handleInputValidation,
-  validateProjectExists,
   TaskController.getTaskById
 );
 
