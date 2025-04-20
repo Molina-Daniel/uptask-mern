@@ -86,4 +86,14 @@ router.delete(
   TaskController.deleteTask
 );
 
+router.post(
+  "/:projectId/tasks/:taskId/status",
+  param("taskId").isMongoId().withMessage("Invalid task ID"),
+  body("status")
+    .isIn(["pending", "onHold", "inProgress", "underReview", "completed"])
+    .withMessage("Invalid status"),
+  handleInputValidation,
+  TaskController.updateTaskStatus
+);
+
 export default router;
