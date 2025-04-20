@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Task from "../models/Task";
+import Project from "../models/Project";
 
 export class TaskController {
   static createTask = async (req: Request, res: Response) => {
@@ -55,10 +56,7 @@ export class TaskController {
     const { taskId } = req.params;
 
     try {
-      const task = await Task.findByIdAndUpdate(taskId, req.body, {
-        new: true,
-        runValidators: true,
-      });
+      const task = await Task.findById(taskId);
       if (!task) {
         const error = new Error("Task not found");
         res.status(404).json({ error: error.message });
@@ -69,7 +67,33 @@ export class TaskController {
         res.status(400).json({ error: error.message });
         return;
       }
+      await task.updateOne(req.body);
       res.send("Task updated successfully");
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Server error" });
+    }
+  };
+
+  static deleteTask = async (req: Request, res: Response) => {
+    const { taskId } = req.params;
+
+    try {
+      const task = await Task.findById(taskId);
+      if (!task) {
+        const error = new Error("Task not found");
+        res.status(404).json({ error: error.message });
+        return;
+      }
+
+      // Delete the task from the project
+      const project = await Project.findById(task.project);
+      project.tasks = project.tasks.filter(
+        (task) => task.toString() !== taskId
+      );
+
+      Promise.allSettled([project.save(), task.deleteOne()]);
+      res.send("Task deleted successfully");
     } catch (error) {
       console.log(error);
       res.status(500).json({ error: "Server error" });
