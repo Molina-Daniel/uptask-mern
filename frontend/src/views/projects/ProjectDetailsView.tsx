@@ -1,8 +1,10 @@
-import { Navigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getProjectById } from "@/api/ProjectAPI";
+import AddTaskModal from "@/components/tasks/AddTaskModal";
 
 export default function ProjectDetailsView() {
+  const navigate = useNavigate();
   const params = useParams();
   const projectId = params.projectId!;
 
@@ -30,11 +32,13 @@ export default function ProjectDetailsView() {
           <button
             type="button"
             className="bg-purple-400 hover:bg-purple-500 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors"
-            onClick={() => console.log("Add task")}
+            onClick={() => navigate(location.pathname + "?newTask=true")}
           >
             Add Task
           </button>
         </nav>
+
+        <AddTaskModal />
       </>
     );
 }
